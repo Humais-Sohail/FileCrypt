@@ -1,51 +1,148 @@
-<h1 data-importer="text" align="center">FileCrypt</h1>
+# 🔒 FileCrypt
 
-###
+<div align="center">
 
-<p data-importer="text" align="left">
-A simple command-line file encryption tool written in C++ using libsodium.
-</p>
+**A lightweight file encryption tool written in C++ using libsodium**
 
-###
+Password-based encryption • Argon2id • XSalsa20-Poly1305 • Cross-platform
 
-<h2 data-importer="text" align="center">Features</h2>
+<img src="./sc.png" alt="FileCrypt Screenshot" width="800">
 
-###
+</div>
 
-<p data-importer="text" align="left">
-1. Password-based file encryption<br>
-2. Uses Argon2id for key derivation<br>
-3. Uses XSalsa20-Poly1305 authenticated encryption (crypto_secretbox)<br>
-4. Random salt generated for every file<br>
-5. Random nonce generated for every encryption operation<br>
-6. Detects incorrect passwords and file tampering<br>
-7. Cross-platform (Linux, macOS, Windows)
-</p>
+---
 
-###
+## ✨ Features
 
-<h2 data-importer="text" align="center">Cryptography</h2>
+* 🔐 Password-based file encryption
+* 🛡️ Authenticated encryption using `crypto_secretbox`
+* 🔑 Secure key derivation with Argon2id
+* 🎲 Random salt generated for every file
+* 🎲 Random nonce generated for every encryption operation
+* 🚫 Detects incorrect passwords
+* 🔍 Detects file tampering and corruption
+* 💻 Cross-platform support (Linux, macOS, Windows)
+* ⚡ Simple command-line interface
 
-###
+---
 
-<p data-importer="text" align="left">
-FileCrypt uses the following cryptographic primitives provided by libsodium:
-<br><br>
-1. Key Derivation: Argon2id (crypto_pwhash)<br>
-2. Encryption: XSalsa20<br>
-3. Authentication: Poly1305<br>
-4. Authenticated Encryption API: crypto_secretbox
-</p>
+## 🧠 Cryptography
 
-###
+FileCrypt relies on proven cryptographic primitives provided by libsodium.
 
-<h2 data-importer="text" align="center">Usage</h2>
+| Component      | Algorithm                  |
+| -------------- | -------------------------- |
+| Key Derivation | Argon2id (`crypto_pwhash`) |
+| Encryption     | XSalsa20                   |
+| Authentication | Poly1305                   |
+| Encryption API | `crypto_secretbox`         |
 
-###
+### Encryption Flow
 
-<p data-importer="text" align="left">
-Encrypt a file:
-</p>
+```text
+Password
+   │
+   ▼
+Argon2id + Salt
+   │
+   ▼
+32-byte Key
+   │
+   ▼
+XSalsa20-Poly1305
+   │
+   ▼
+Encrypted File
+```
+
+---
+
+## 🚀 Building
+
+### Linux
+
+```bash
+sudo apt install libsodium-dev
+g++ main.cpp -lsodium -O2 -o filecrypt
+```
+
+### macOS
+
+```bash
+brew install libsodium
+g++ main.cpp -lsodium -O2 -o filecrypt
+```
+
+### Windows (MinGW)
+
+```bash
+g++ main.cpp -lsodium -O2 -o filecrypt.exe
+```
+
+---
+
+## 📖 Usage
+
+### Encrypt a File
 
 ```bash
 ./filecrypt encrypt secret.txt secret.enc
+```
+
+You'll be prompted to enter a password.
+
+### Decrypt a File
+
+```bash
+./filecrypt decrypt secret.enc secret.txt
+```
+
+Enter the same password used during encryption.
+
+### Example
+
+```bash
+$ ./filecrypt encrypt notes.txt notes.enc
+Password: ********
+Encrypted: notes.enc
+
+$ ./filecrypt decrypt notes.enc notes.txt
+Password: ********
+Decrypted: notes.txt
+```
+
+---
+
+## 📁 Encrypted File Format
+
+```text
+[SALT]
+[NONCE]
+[CIPHERTEXT + MAC]
+```
+
+The salt and nonce are stored in the encrypted file and are not secret.
+
+---
+
+## 🔐 Security Notes
+
+* Every encrypted file receives a unique random salt.
+* Every encryption operation uses a unique random nonce.
+* Encryption keys are derived from the password and never stored.
+* Modified or corrupted files will fail authentication.
+* Incorrect passwords are detected automatically.
+
+---
+
+## 📜 License
+
+Released under the MIT License.
+
+---
+
+<div align="center">
+
+Made with ❤️ and libsodium and.... and what???
+
+</div>
